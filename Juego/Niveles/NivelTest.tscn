@@ -11,10 +11,16 @@ script = ExtResource( 2 )
 explosion = ExtResource( 4 )
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 460, 271 )
+position = Vector2( 1752, 484 )
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource( 3 )
 
 [node name="EnemigoDummy" parent="." instance=ExtResource( 5 )]
-position = Vector2( 990, 516 )
+position = Vector2( -221, 503 )
+
+[node name="Canion" parent="EnemigoDummy" index="2"]
+position = Vector2( -78, -46 )
+
+[editable path="EnemigoDummy"]
+[editable path="EnemigoDummy/Canion"]

@@ -1,13 +1,14 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Juego/Naves/Player/player_orange.png" type="Texture" id=1]
 [ext_resource path="res://Juego/Naves/Player/Player.gd" type="Script" id=2]
 [ext_resource path="res://Juego/Naves/Player/MaterialFisico.tres" type="PhysicsMaterial" id=3]
 [ext_resource path="res://Juego/Proyectiles/Canion.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Juego/SFX/disparo_laser.ogg" type="AudioStream" id=5]
+[ext_resource path="res://Juego/Naves/Player/Escudo/Escudo.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Juego/Proyectiles/Laser/LaserBeam2D.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Juego/Naves/Player/Estela/Trail2D.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Juego/Naves/Player/Motor/MotorSFX.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Juego/SFX/player_recibe_daño.ogg" type="AudioStream" id=9]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 40.1995
@@ -116,6 +117,7 @@ shape = SubResource( 1 )
 
 [node name="Canion" parent="." instance=ExtResource( 4 )]
 position = Vector2( -1, 0 )
+rotation = -0.00107366
 cadencia_disparo = 0.25
 velocidad_proyectil = 1600
 
@@ -126,12 +128,12 @@ position = Vector2( 0, -33 )
 position = Vector2( 0, 33 )
 
 [node name="DisparoSFX" parent="Canion" index="2"]
-stream = ExtResource( 5 )
 bus = "SFX"
 
 [node name="TimerEnfriamiento" parent="Canion" index="3"]
 wait_time = 0.8
-one_shot = true
+one_shot = false
+autostart = false
 
 [node name="LaserBeam2D" parent="." instance=ExtResource( 6 )]
 position = Vector2( 38, 0 )
@@ -147,9 +149,6 @@ lifetime = 0.6
 max_points = 150
 target_path = NodePath("..")
 
-[node name="MotorSFX" parent="." instance=ExtResource( 8 )]
-volume_db = -1.0
-
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "spawn"
 reset_on_save = false
@@ -157,7 +156,16 @@ anims/RESET = SubResource( 2 )
 anims/default = SubResource( 3 )
 anims/spawn = SubResource( 4 )
 
-[connection signal="timeout" from="Canion/TimerEnfriamiento" to="Canion" method="_on_TimerEnfriamiento_timeout"]
+[node name="MotorSFX" parent="." instance=ExtResource( 8 )]
+volume_db = -1.0
+
+[node name="ImpactoSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 9 )
+volume_db = -10.636
+bus = "SFX"
+
+[node name="Escudo" parent="." instance=ExtResource( 5 )]
+
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
 
 [editable path="Canion"]
